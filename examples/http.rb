@@ -36,15 +36,7 @@ listeners.each { |listener| listener.listen(20) }
 
 #puts Process.fork.inspect
 
-loop.watch listeners do
-  def acceptable!(socket, event_loop)
-    stream = socket.accept_nonblock.first
-#    puts Process.pid
-    event_loop.watch stream, HttpWatcher.new(stream)
-  rescue IO::WaitReadable
-    # nothing
-  end
-end
+loop.watch(listeners, Selecta::Basic::Acceptor.new(HttpWatcher))
 
 puts "listening..."
 loop.run
