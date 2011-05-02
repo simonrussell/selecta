@@ -5,6 +5,12 @@ class Selecta::EventLoop
     @read_list = []
   end
 
+  def tcp_listen(port, acceptor)
+    listeners = Socket.tcp_server_sockets(port)
+    listeners.each { |listener| listener.listen(20) }
+    watch(listeners, acceptor)
+  end
+
   def watch(io, watcher = nil, &block)
     if watcher.nil? && block
       watcher = Object.new

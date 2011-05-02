@@ -30,13 +30,7 @@ class HttpWatcher
 end
 
 loop = Selecta::EventLoop.new
-
-listeners = Socket.tcp_server_sockets(3000)
-listeners.each { |listener| listener.listen(20) }
-
-#puts Process.fork.inspect
-
-loop.watch(listeners, Selecta::Basic::Acceptor.new(HttpWatcher))
+loop.tcp_listen(3000, Selecta::Basic::Acceptor.new(HttpWatcher))
 
 puts "listening..."
 loop.run
