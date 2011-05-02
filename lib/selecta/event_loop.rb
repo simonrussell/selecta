@@ -25,7 +25,9 @@ class Selecta::EventLoop
     end
   end
 
-  def run
+  def run(&initializer)
+    instance_eval(&initializer) if initializer
+
     while true
       result = IO.select(@read_list, nil, nil, nil)
 

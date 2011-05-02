@@ -30,7 +30,8 @@ class HttpWatcher
 end
 
 loop = Selecta::EventLoop.new
-loop.tcp_listen(3000, Selecta::Basic::Acceptor.new(HttpWatcher))
 
-puts "listening..."
-loop.run
+loop.run do
+  tcp_listen(3000, Selecta::Basic::Acceptor.new(HttpWatcher))
+  puts "listening..."
+end
